@@ -8,8 +8,23 @@ public class GameManager : MonoBehaviour {
     bool gameIsEnded = false;
     public float restartDelay = 3f;
 
+    public static GameManager Instance { get { return _instance; } }
+    private static GameManager _instance;
+
     public GameObject completeLevelUI;
     public GameObject gameOver;
+
+    private void Awake()
+    {
+        if (!_instance)
+        {
+            _instance = this;
+        }
+        else
+        {
+            Debug.LogError("More then one singletone of GameManager");
+        }
+    }
 
     public void EndGame()
     {

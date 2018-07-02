@@ -31,7 +31,7 @@ public class InputManager : MonoBehaviour {
         Collider2D hit = Physics2D.OverlapPoint(camVector,  1 << LayerMask.NameToLayer("Ground"));
         if (hit)
         {            
-            Debug.Log(hit.transform.name);                            
+            //Debug.Log(hit.transform.name);                            
             player.DefinePath(hit.transform.GetComponent<Cell>());            
         }
         else

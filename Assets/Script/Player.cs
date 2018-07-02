@@ -12,7 +12,8 @@ public class Player : Unit {
             ScoreScript.scoreValue += 10;
             if (ScoreScript.scoreValue == 650)
             {                
-                FindObjectOfType<GameManager>().CompleteLevel();
+                //FindObjectOfType<GameManager>().CompleteLevel();
+                GameManager.Instance.CompleteLevel();
             }
             Destroy(other.gameObject);            
         }

@@ -1328,12 +1328,12 @@ Prefab:
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 328
+      value: 900
       objectReference: {fileID: 0}
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 178
+      value: -97.5
       objectReference: {fileID: 0}
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
@@ -1348,22 +1348,22 @@ Prefab:
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
@@ -1377,13 +1377,8 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114078194491073392, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
-      propertyPath: levelManager
-      value: 
-      objectReference: {fileID: 394442193}
-    - target: {fileID: 114078194491073392, guid: 195d2ce48c880744b90434601dd4d65d,
-        type: 2}
-      propertyPath: damage
-      value: 40
+      propertyPath: searchRadius
+      value: 200
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 195d2ce48c880744b90434601dd4d65d, type: 2}
@@ -2481,25 +2476,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1755295459}
---- !u!1 &1772485294 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1934623766898314, guid: 195d2ce48c880744b90434601dd4d65d,
-    type: 2}
-  m_PrefabInternal: {fileID: 836381836}
---- !u!114 &1772485298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1772485294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35597cf6bc3851a44828952d4925d107, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBarCurrent: {fileID: 0}
-  ratioText: {fileID: 0}
-  healthTr: {fileID: 1462554960}
 --- !u!1 &1840608520
 GameObject:
   m_ObjectHideFlags: 0
@@ -2966,12 +2942,12 @@ Prefab:
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 328
+      value: 900
       objectReference: {fileID: 0}
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -127
+      value: -402.5
       objectReference: {fileID: 0}
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
@@ -2986,22 +2962,22 @@ Prefab:
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224707989224948546, guid: 195d2ce48c880744b90434601dd4d65d,
         type: 2}
@@ -3021,6 +2997,11 @@ Prefab:
     - target: {fileID: 1934623766898314, guid: 195d2ce48c880744b90434601dd4d65d, type: 2}
       propertyPath: m_Name
       value: Enemy (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114078194491073392, guid: 195d2ce48c880744b90434601dd4d65d,
+        type: 2}
+      propertyPath: searchRadius
+      value: 200
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 195d2ce48c880744b90434601dd4d65d, type: 2}

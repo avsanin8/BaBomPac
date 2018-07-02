@@ -30,11 +30,16 @@ public class Enemy : Unit {
     {
         Cell curPosPlayer = LevelManager.Instance.FindPlayerCell();
         Cell target = null;
-        Vector3 randRadtarget = new Vector3(curPosPlayer.tr.position.x, curPosPlayer.tr.position.y, 0f);
-        randRadtarget = Random.onUnitSphere * searchRadius;
-        if (target != curPosPlayer)
-            target = LevelManager.Instance.ClosestCell(randRadtarget);
 
+        Vector3 randRadTarget = new Vector3(curPosPlayer.tr.position.x, curPosPlayer.tr.position.y, 0f);
+        randRadTarget = Random.onUnitSphere * searchRadius;
+        randRadTarget[2] = 0f;
+
+        Vector3 curTarget = curPosPlayer.tr.position - randRadTarget; // получаем рандомный вокруг плеера        
+
+        if (target != curPosPlayer)
+            target = LevelManager.Instance.ClosestCell(curTarget);
+        
         return target;
 
 

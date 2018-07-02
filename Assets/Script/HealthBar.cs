@@ -35,9 +35,9 @@ public class HealthBar : MonoBehaviour {
         if (hitPoint < 0)
         {
             hitPoint = 0;
-            FindObjectOfType<GameManager>().PlayerDead();
-            Debug.Log("Dead!");
-            
+            //FindObjectOfType<GameManager>().PlayerDead();
+            GameManager.Instance.PlayerDead();
+            Debug.Log("Dead!");            
         }
 
         UpdateHealthBar();

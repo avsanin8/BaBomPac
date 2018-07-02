@@ -136,11 +136,14 @@ public class LevelManager : MonoBehaviour
     {
         //float tempMaxMagnitude = Mathf.Infinity;
         Vector3 tempVector3 = allCells[fieldWidth-1, fieldHeight-1].tr.position;
+        //Debug.Log("tempVector3 pos.x:" + tempVector3.x + " y:" + tempVector3.y + " fieldWidth: "+ fieldWidth + " fieldHeight: "+ fieldHeight);
         Cell cellClosest = null;//allCells[fieldWidth-1, fieldHeight-1];        
         for (int x = 0; x < fieldWidth; x++)
         {            
             for (int y = 0; y < fieldHeight; y++)
-            {                
+            {
+                if (cellClosest !=null && pos.GetHashCode() == cellClosest.GetHashCode())
+                    continue;
                 //(allCells[x, y].transform.position - pos).magnitude < (cellClosest.transform.position - pos).magnitude)
                 if (allCells[x, y].isWalk && (allCells[x, y].tr.position - pos).magnitude < (tempVector3 - pos).magnitude)
                 {
@@ -149,13 +152,15 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
+        //Debug.Log("cellClosest x: " + cellClosest.tr.position.x + " y: " + cellClosest.tr.position.y);
         return cellClosest;
+        
     }
 
     public Cell FindPlayerCell()
     {
         if (player)
-        {
+        {            
             return ClosestCell(player.tr.position);
         }
         else
@@ -171,7 +176,7 @@ public class LevelManager : MonoBehaviour
         {
             for (int y = 0; y < fieldHeight; y++)
             {
-                Vector2 anchorPos = new Vector2(100 * x, -100 * y);
+                Vector2 anchorPos = new Vector2(100f * x, -100f * y);
                 Cell curCell;
                 
                 if (x == 0 || y == 0 || x == fieldWidth - 1 || y == fieldHeight - 1)
@@ -224,6 +229,10 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
+
+
+        //print coord
+        //PrintCellAllCoord();
     }
 
     public void SetNaighbor(Cell neighborCell)
@@ -263,7 +272,18 @@ public class LevelManager : MonoBehaviour
         if (!neighborCell) Debug.Log("neighborCell is null " + neighborCell);
     }
 
-
+    //void PrintCellAllCoord()
+    //{
+    //    //Vector3 tempVector3 = allCells[fieldWidth - 1, fieldHeight - 1].tr.position;
+        
+    //    for (int x = 0; x < fieldWidth; x++)
+    //    {
+    //        for (int y = 0; y < fieldHeight; y++)
+    //        {
+    //            Debug.Log("allCells["+x+","+y+"].tr.position: " + allCells[x, y].tr.position);
+    //        }
+    //    }
+    //}
 
 
 

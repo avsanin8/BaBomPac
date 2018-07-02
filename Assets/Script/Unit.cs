@@ -24,17 +24,20 @@ public class Unit : MonoBehaviour {
         {
             return;
         }
-        Vector2 itemPos = wayPoints[0].tr.position;
-
-        if (itemPos.x < tr.position.x)
-            tr.eulerAngles = new Vector3(0,180,0);
         else
-            tr.eulerAngles = new Vector3(0, 0, 0);
-
-        tr.position = Vector2.MoveTowards(tr.position, itemPos, speed * Time.deltaTime);
-        if (Vector2.Distance(tr.position, itemPos) == 0)
         {
-            wayPoints.RemoveAt(0);
+            Vector2 itemPos = wayPoints[0].tr.position;
+
+            if (itemPos.x < tr.position.x)
+                tr.eulerAngles = new Vector3(0, 180, 0);
+            else
+                tr.eulerAngles = new Vector3(0, 0, 0);
+
+            tr.position = Vector2.MoveTowards(tr.position, itemPos, speed * Time.deltaTime);
+            if (Vector2.Distance(tr.position, itemPos) == 0)
+            {
+                wayPoints.RemoveAt(0);
+            }
         }
     }
 

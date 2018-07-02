@@ -10,18 +10,17 @@ public class Cell : MonoBehaviour {
 
     public List <Cell> neighborCells = new List<Cell>();
 
-    void Start () {   
+    //void Start () {   
 
-    }
+    //}
 	
 	
-	void Update () {
+	//void Update () {
 		
-	}
+	//}
 
     public void AddCell(Cell cell)
     {
-        
         neighborCells.Add(cell);
         if (cell == this)
             return;
