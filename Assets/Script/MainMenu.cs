@@ -11,6 +11,7 @@ public class MainMenu : MonoBehaviour {
 
         // To bild by index
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        ScoreScript.scoreValue = 0;
     }
 
     public void QuitGame()

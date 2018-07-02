@@ -10,8 +10,8 @@ public class Unit : MonoBehaviour {
 
     public RectTransform tr;
     
-    public LevelManager levelManager;
-    public List<Cell> wayPoints;
+    
+    protected List<Cell> wayPoints;
 
     void Start()
     {
@@ -40,8 +40,8 @@ public class Unit : MonoBehaviour {
 
     public void DefinePath(Cell aTarget)
     {
-        Cell startTarget = levelManager.ClosestCell(tr.position);
-        wayPoints = levelManager.CalcShortestWay(startTarget, aTarget);
+        Cell startTarget = LevelManager.Instance.ClosestCell(tr.position);
+        wayPoints = LevelManager.Instance.CalcShortestWay(startTarget, aTarget);
     }
 
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : Unit {
     public int searchRadius = 200;
+    public float damage = 10f;
 
     protected override void Update () {
 
@@ -16,14 +17,23 @@ public class Enemy : Unit {
 
     }
 
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
+            other.SendMessage("TakeDamage", damage * Time.deltaTime);       // huinya     
+        }
+    }
+
+
     private Cell SearchRadius()
     {
-        Cell curPosPlayer = levelManager.FindPlayerCell();
+        Cell curPosPlayer = LevelManager.Instance.FindPlayerCell();
         Cell target = null;
         Vector3 randRadtarget = new Vector3(curPosPlayer.tr.position.x, curPosPlayer.tr.position.y, 0f);
         randRadtarget = Random.onUnitSphere * searchRadius;
         if (target != curPosPlayer)
-            target = levelManager.ClosestCell(randRadtarget);
+            target = LevelManager.Instance.ClosestCell(randRadtarget);
 
         return target;
 

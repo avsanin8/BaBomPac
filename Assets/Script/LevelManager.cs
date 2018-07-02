@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    //10:J(7) :fieldWidth, fieldHeight
+    //10:J(10) :fieldWidth, fieldHeight
     //public int etap; 
     public int fieldWidth, fieldHeight;
     //public float offset=2;
@@ -12,7 +12,10 @@ public class LevelManager : MonoBehaviour
     //public Transform cellParent;
     //public Sprite[] tileSpr = new Sprite[2];
 
-    public Canvas GameCanvas;
+    private static LevelManager _instance;
+    public static LevelManager Instance { get { return _instance; } }
+
+    public Canvas GameCanvas; // not using temporaly
 
     public Cell grounPref;
     public Cell blokPref;
@@ -20,6 +23,19 @@ public class LevelManager : MonoBehaviour
     Cell[,] allCells;
     public RectTransform canvas;
     public Player player;
+
+
+    private void Awake()
+    {
+        if (!_instance)
+        {
+            _instance = this;
+        }
+        else
+        {
+            Debug.LogError("More then one singletone of LevelManager");
+        }
+    }
 
     void Start()
     {

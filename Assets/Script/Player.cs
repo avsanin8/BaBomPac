@@ -5,18 +5,16 @@ using UnityEngine;
 public class Player : Unit {
     
 
-    void OnTriggerEnter2D(Collider2D point)
-    {
-        Debug.Log("OnTriggerEnter in :" + point.gameObject.name);
-        if (point.gameObject.tag == "Point")
+    void OnTriggerEnter2D(Collider2D other)
+    {        
+        if (other.gameObject.tag == "Point")
         {
             ScoreScript.scoreValue += 10;
             if (ScoreScript.scoreValue == 650)
-            {
-                Debug.Log("Victory");
-                FindObjectOfType<GameManager>().EndGame();
+            {                
+                FindObjectOfType<GameManager>().CompleteLevel();
             }
-            Destroy(point.gameObject);            
+            Destroy(other.gameObject);            
         }
     }
 
