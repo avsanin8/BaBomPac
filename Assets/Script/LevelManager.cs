@@ -16,10 +16,10 @@ public class LevelManager : MonoBehaviour
     private static LevelManager _instance;
     public static LevelManager Instance { get { return _instance; } }
 
-    public Canvas GameCanvas; // not using temporaly
+    //public Canvas GameCanvas; // not using temporaly
 
-    public Cell grounPref;
-    public Cell blokPref;
+    public Cell cell;
+    //public Cell blokPref;
     public Point pointPref;
     Cell[,] allCells;
     public RectTransform canvas;
@@ -64,7 +64,7 @@ public class LevelManager : MonoBehaviour
 
     public List<Cell> CalcShortestWay(Cell pointStart, Cell pointEnd)
     {
-        if (!pointEnd || !pointEnd.isWalk)
+        if (!pointEnd || !pointEnd.IsWalk)
         {
             return null;
         }
@@ -102,7 +102,7 @@ public class LevelManager : MonoBehaviour
                     closedList.Add(currNode);
                     for (int j = 0; j < currNode.neighborCells.Count; j++)
                     {
-                        if (!currNode.neighborCells[j].isWalk)
+                        if (!currNode.neighborCells[j].IsWalk)
                         {
                             continue;
                         }
@@ -156,8 +156,8 @@ public class LevelManager : MonoBehaviour
     {
         //float tempMaxMagnitude = Mathf.Infinity;        
         Vector3 tempVector3 = allCells[fieldWidth-1, fieldHeight-1].tr.position;
-        //Debug.Log("tempVector3 pos.x:" + tempVector3.x + " y:" + tempVector3.y + " fieldWidth: "+ fieldWidth + " fieldHeight: "+ fieldHeight);
-        Cell cellClosest = null;//allCells[fieldWidth-1, fieldHeight-1];        
+        
+        Cell cellClosest = null;
         for (int x = 0; x < fieldWidth; x++)
         {            
             for (int y = 0; y < fieldHeight; y++)
@@ -165,14 +165,13 @@ public class LevelManager : MonoBehaviour
                 if (cellClosest !=null && pos.GetHashCode() == cellClosest.GetHashCode())
                     continue;
                 //(allCells[x, y].transform.position - pos).magnitude < (cellClosest.transform.position - pos).magnitude)
-                if (allCells[x, y].isWalk && (allCells[x, y].tr.position - pos).magnitude < (tempVector3 - pos).magnitude)
+                if (allCells[x, y].IsWalk && (allCells[x, y].tr.position - pos).magnitude < (tempVector3 - pos).magnitude)
                 {
                     tempVector3 = allCells[x, y].tr.position;
                     cellClosest = allCells[x, y];
                 }
             }
-        }
-        //Debug.Log("cellClosest x: " + cellClosest.tr.position.x + " y: " + cellClosest.tr.position.y);
+        }        
         return cellClosest;
         
     }
@@ -203,16 +202,19 @@ public class LevelManager : MonoBehaviour
                 
                 if (x == 0 || y == 0 || x == fieldWidth - 1 || y == fieldHeight - 1)
                 {                    
-                    curCell = Instantiate(blokPref, canvas);
+                    curCell = Instantiate(cell, canvas);
+                    curCell.IsWalk = false; //block
                 }
 
                 else if (x % 2 == 0 && y % 2 == 0)
-                {                   
-                    curCell = Instantiate(blokPref, canvas);                    
+                {                    
+                    curCell = Instantiate(cell, canvas);
+                    curCell.IsWalk = false;
                 }
                 else
-                {
-                    curCell = Instantiate(grounPref, canvas);                    
+                {                    
+                    curCell = Instantiate(cell, canvas);
+                    curCell.IsWalk = true;
                 }
                 
                 curCell.tr.anchoredPosition = anchorPos;
@@ -225,7 +227,7 @@ public class LevelManager : MonoBehaviour
         {
             for (int y = 0; y < fieldHeight; y++)
             {
-                if (allCells[x,y].isWalk)
+                if (allCells[x,y].IsWalk)
                 {                    
                     Cell curNeighborCell = allCells[x, y];
                     if (curNeighborCell)
@@ -243,7 +245,7 @@ public class LevelManager : MonoBehaviour
             {
                 Vector2 anchorPos = new Vector2(100 * x, -100 * y);
                 Point curPoint;
-                if (allCells[x, y].isWalk)
+                if (allCells[x, y].IsWalk)
                 {
                     curPoint = Instantiate(pointPref, canvas);
                     //curPoint.player = player;
@@ -266,19 +268,19 @@ public class LevelManager : MonoBehaviour
                 {
                     if (neighborCell == allCells[x,y])
                     {
-                        if (x > 0 && allCells[x + 1, y].isWalk && y < fieldWidth)
+                        if (x > 0 && allCells[x + 1, y].IsWalk && y < fieldWidth)
                         {
                             neighborCell.AddCell(allCells[x + 1, y]);
                         }
-                        if (x > 0 && allCells[x - 1, y].isWalk && y < fieldWidth)
+                        if (x > 0 && allCells[x - 1, y].IsWalk && y < fieldWidth)
                         {
                             neighborCell.AddCell(allCells[x - 1, y]);
                         }
-                        if (y > 0 && allCells[x, y + 1].isWalk && y < fieldHeight)
+                        if (y > 0 && allCells[x, y + 1].IsWalk && y < fieldHeight)
                         {
                             neighborCell.AddCell(allCells[x, y + 1]);
                         }
-                        if (y > 0 && allCells[x, y - 1].isWalk && y < fieldHeight)
+                        if (y > 0 && allCells[x, y - 1].IsWalk && y < fieldHeight)
                         {
                             neighborCell.AddCell(allCells[x, y - 1]);
                         }
@@ -293,6 +295,7 @@ public class LevelManager : MonoBehaviour
         if (!neighborCell) Debug.Log("neighborCell is null " + neighborCell);
     }
 
+    //Random Generator Field
     void CreateLevel_02()
     {
         for (int x = 0; x < fieldWidth; x++)
@@ -305,16 +308,19 @@ public class LevelManager : MonoBehaviour
 
                 if (x == 0 || y == 0 || x == fieldWidth - 1 || y == fieldHeight - 1)
                 {
-                    curCell = Instantiate(blokPref, canvas);
+                    curCell = Instantiate(cell, canvas);
+                    curCell.IsWalk = false;
                 }
 
                 else if (rand < Random.Range(0, fieldHeight / 2))
                 {
-                    curCell = Instantiate(blokPref, canvas);
+                    curCell = Instantiate(cell, canvas);
+                    curCell.IsWalk = false;
                 }
                 else
                 {
-                    curCell = Instantiate(grounPref, canvas);
+                    curCell = Instantiate(cell, canvas);
+                    curCell.IsWalk = true;
                 }
 
                 curCell.tr.anchoredPosition = anchorPos;
@@ -322,81 +328,35 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-        //Cell curNeighborCell;
-        for (int x = 0; x < fieldWidth; x++)
-        {
-            for (int y = 0; y < fieldHeight; y++)
-            {
-                if (allCells[x, y].isWalk)
-                {
-                    Cell curNeighborCell = allCells[x, y];
-                    if (curNeighborCell)
-                    {
-                        SetNaighbor(curNeighborCell);
-                    }
-                }
-            }
-        }
-
-
 
         //Fixed field
+        SetAllNaighbor();
+        Cell cellWalkStart = null;     // start pos Player
         for (int x = 0; x < fieldWidth; x++)
         {
-            Cell cellWalkStart = null;
             for (int y = 0; y < fieldHeight; y++)
             {
-                //Vector2 anchorPos = new Vector2(100f * x, -100f * y);
-                //Cell curCellFixed;
                 if (x == 0 || y == 0 || x == fieldWidth - 1 || y == fieldHeight - 1)
                 {
                     continue;
                 }
-                if (allCells[x, y].isWalk)
+
+                if (allCells[x, y].IsWalk && !cellWalkStart)
                 {
-                    cellWalkStart = allCells[x, y];
+                    cellWalkStart = allCells[x, y]; 
+                    Debug.Log("cell Walk Start pos x: " + cellWalkStart.tr.position.x + " y:" + cellWalkStart.tr.position.y);
+                    break;
                 }
-
-                if (allCells[x, y].isWalk && allCells[x, y].neighborCells.Count == 0)
-                {
-                    //List<Cell> curWayPoints = SetWalkingMapCells(cellWalkStart, allCells[x, y]);
-
-                    if (cellWalkStart != null)
-                        SetWalkingMapCells(cellWalkStart, allCells[x, y]);
-                    
-                    
-                    //if (curWayPoints == null || curWayPoints.Count == 0)
-                    //{
-                    //    return;
-                    //}
-                    //else
-                    //{
-
-
-                    //    curCellFixed = curWayPoints[0];
-                    //    curCellFixed = Instantiate(grounPref, canvas);
-                    //    curCellFixed.tr.anchoredPosition = anchorPos;
-
-
-                    //    curWayPoints.RemoveAt(0);                        
-                    //}
-
-                    //if (x != 0 || x != fieldWidth - 1 || x + 1 != fieldWidth - 1)
-                    //{
-                    //    curCellFixed = Instantiate(grounPref, canvas);
-                    //    curCellFixed.tr.anchoredPosition = anchorPos;
-                    //    allCells[x + 1, y] = curCellFixed;
-                    //    allCells[x + 1, y].isWalk = true;
-                    //    SetNaighbor(allCells[x + 1, y]);
-                    //}
-
-                }
-                else
-                {
-                    continue;
-                }
-            }
+            }                
         }
+        Cell closestCell = ClosestWalkableCell(cellWalkStart); //Closest Walkable Cell
+        Debug.Log("closestCell pos x:"+ closestCell.tr.position.x + " y: " + closestCell.tr.position.y);
+
+        // Check if MinWay can walk to Closest Walkable cell 
+        SetWalkingMapCells(cellWalkStart, closestCell);
+
+
+
 
         // Set Point prefab
         for (int x = 0; x < fieldWidth; x++)
@@ -405,7 +365,7 @@ public class LevelManager : MonoBehaviour
             {
                 Vector2 anchorPos = new Vector2(100 * x, -100 * y);
                 Point curPoint;
-                if (allCells[x, y].isWalk)
+                if (allCells[x, y].IsWalk)
                 {
                     curPoint = Instantiate(pointPref, canvas);
                     //curPoint.player = player;
@@ -418,11 +378,11 @@ public class LevelManager : MonoBehaviour
     }
 
 
-    List<Cell> SetWalkingMapCells(Cell pointStart, Cell pointEnd)
+    void SetWalkingMapCells(Cell pointStart, Cell pointEnd)
     {
-        if (!pointEnd || !pointEnd.isWalk)
+        if (!pointEnd || !pointEnd)
         {
-            return null;
+            Debug.Log("!pointEnd || !pointEnd Not Found") ;
         }
 
         float minDist = CalcMinDist(pointStart, pointEnd);
@@ -456,13 +416,13 @@ public class LevelManager : MonoBehaviour
 
                     openList.Remove(currNode);
                     closedList.Add(currNode);
-                    //Тут подумать: шо робить с neighborCells если их нема 0
                     for (int j = 0; j < currNode.neighborCells.Count; j++)
                     {
-                        if (!currNode.neighborCells[j].isWalk)
-                        {
-                            continue;
-                        }
+                        //if (!currNode.neighborCells[j].IsWalk)
+                        //{
+                        //    Debug.Log("Can't walk whith this Neighbour pos.x: " + currNode.neighborCells[j].tr.position.x + " y: " + currNode.neighborCells[j].tr.position.y);
+                        //    continue;
+                        //}
                         if (closedList.Contains(currNode.neighborCells[j]))
                         {
                             continue;
@@ -482,7 +442,7 @@ public class LevelManager : MonoBehaviour
         }
         if (!from.ContainsKey(pointEnd))
         {
-            return null;
+            Debug.Log("pointEnd NOT Found");
         }
 
         List<Cell> minWay = new List<Cell>();
@@ -499,12 +459,71 @@ public class LevelManager : MonoBehaviour
         //if (minWay.Contains(pointStart))
         //    Debug.Log("Wery good: is minWay Contains pointStart !! :)");
 
-        return minWay;
+        
+        if (minWay.Count != 0)
+        {
+            Debug.Log("minWay.Count: " + minWay.Count);
+            foreach (var item in minWay)
+            {
+                Debug.Log("minWay x: " + item.tr.position.x + " y: " + item.tr.position.y);
+                item.IsWalk = true;
+            }
+        }
+    }
+
+    public Cell ClosestWalkableCell(Cell startCell)
+    {           
+        Vector3 tempVector3 = allCells[fieldWidth - 1, fieldHeight - 1].tr.position;
+        Cell cellClosest = null;
+        
+        for (int x = 0; x < fieldWidth; x++)
+        {
+            for (int y = 0; y < fieldHeight; y++)
+            {                
+                if (startCell != allCells[x, y])
+                {
+                    if (allCells[x, y].IsWalk && (allCells[x, y].tr.position - startCell.tr.position).magnitude < (tempVector3 - startCell.tr.position).magnitude)
+                    {
+                        tempVector3 = allCells[x, y].tr.position;
+                        cellClosest = allCells[x, y];
+                    }
+                }
+            }
+        }
+        return cellClosest;
+
+    }
+
+    public void SetAllNaighbor()
+    {
+        for (int x = 0; x < fieldWidth; x++)
+        {
+            for (int y = 0; y < fieldHeight; y++)
+            {
+                if (x == 0 || y == 0 || x == fieldWidth - 1 || y == fieldHeight - 1)
+                {
+                    continue;
+                }
+                if (x > 0 && x + 1 != fieldWidth-1 && y < fieldHeight)
+                {
+                    allCells[x, y].AddCell(allCells[x + 1, y]);
+                }
+                if (x > 0 && x - 1 != 0 && y < fieldHeight)
+                {
+                    allCells[x, y].AddCell(allCells[x - 1, y]);
+                }
+                if (y > 0 && y + 1 != fieldHeight - 1 &&  y < fieldHeight)
+                {
+                    allCells[x, y].AddCell(allCells[x, y + 1]);
+                }
+                if (y > 0 && y - 1 != 0 && y < fieldHeight)
+                {
+                    allCells[x, y].AddCell(allCells[x, y - 1]);
+                }
+            }
+        }
     }
 
 
 
-
-
-
-}
+    }

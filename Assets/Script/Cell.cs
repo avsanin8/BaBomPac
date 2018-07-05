@@ -1,23 +1,43 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Cell : MonoBehaviour {
-
-    public bool isWalk;    
+        
+    private bool _isWalk = false;
     public RectTransform tr;
+    public Sprite ground;
+    public Sprite block;
+
+    public Image image;
+
+    public List<Cell> neighborCells = new List<Cell>();
 
 
-    public List <Cell> neighborCells = new List<Cell>();
 
-    //void Start () {   
+    public bool IsWalk
+    {
+        get
+        {
+            return _isWalk;
+        }
+        set
+        {
+            _isWalk = value;
+            if (_isWalk)
+            {
+                image.sprite = ground;
+            }
+            else image.sprite = block;
+        }
+    }
+
+
+    //void Update () {
 
     //}
-	
-	
-	//void Update () {
-		
-	//}
 
     public void AddCell(Cell cell)
     {
