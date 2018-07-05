@@ -40,14 +40,15 @@ public class GameManager : MonoBehaviour {
 
     void RestartGame()
     {
-        //SceneManager.LoadScene("SampleScene"); // Load scene whit name
+        SceneManager.LoadScene("SampleScene"); // Load scene whit name
         ScoreScript.scoreValue = 0;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Load current scene
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Load current scene
     }
 
     public void CompleteLevel()
     {
         completeLevelUI.SetActive(true);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); // Load next level
         Debug.Log(" level Won!");
     }
 

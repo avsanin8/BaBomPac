@@ -8,9 +8,10 @@ public class HealthBar : MonoBehaviour {
     public Image healthBarCurrent;
     public Text ratioText;
     public RectTransform healthTr;
+    public Unit unit;
 
-    private float hitPoint = 150;
-    private float maxHitPoint = 150;
+    //private float hitPoint = 150;
+    //private float maxHitPoint = 150;
 
     private void Start()
     {
@@ -19,41 +20,17 @@ public class HealthBar : MonoBehaviour {
 
     private void Update()
     {
-        FixedPosition();        
+        FixedPosition();
+        UpdateHealthBar();
     }
 
     private void UpdateHealthBar()
     {
-        float ratio = hitPoint / maxHitPoint;
+        float ratio = unit.hitPoint / unit.maxHitPoint;
         healthBarCurrent.rectTransform.localScale = new Vector3(ratio, 1, 1);
         ratioText.text = (ratio * 100).ToString("0") + "%";
     }
-
-    private void TakeDamage(float damage)
-    {
-        hitPoint -= damage;
-        if (hitPoint < 0)
-        {
-            hitPoint = 0;
-            //FindObjectOfType<GameManager>().PlayerDead();
-            GameManager.Instance.PlayerDead();
-            Debug.Log("Dead!");            
-        }
-
-        UpdateHealthBar();
-    }
-
-    private void AddHealth (float heal)
-    {
-        // need add some healStaf 
-        hitPoint += heal;
-        if (hitPoint > maxHitPoint)
-        {
-            hitPoint = maxHitPoint;
-        }
-
-        UpdateHealthBar();
-    }
+    
 
     private void FixedPosition()
     {

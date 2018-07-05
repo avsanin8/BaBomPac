@@ -9,11 +9,14 @@ public class Unit : MonoBehaviour {
     public float speed;
 
     public RectTransform tr;
-    
-    
+    public float hitPoint;
+    public float maxHitPoint;
+
+    //public HealthBar healthBar;
+
     protected List<Cell> wayPoints;
 
-    void Start()
+    protected virtual void Start()
     {
 
     }
@@ -47,6 +50,28 @@ public class Unit : MonoBehaviour {
         wayPoints = LevelManager.Instance.CalcShortestWay(startTarget, aTarget);
     }
 
+
+    public void TakeDamage(float damage)
+    {
+        hitPoint -= damage;
+        if (hitPoint < 0)
+        {
+            hitPoint = 0;
+            //FindObjectOfType<GameManager>().PlayerDead();
+            GameManager.Instance.PlayerDead();
+            Debug.Log("Dead!");
+        }        
+    }
+
+    public void AddHealth(float heal)
+    {
+        // need add some healStaf 
+        hitPoint += heal;
+        if (hitPoint > maxHitPoint)
+        {
+            hitPoint = maxHitPoint;
+        }        
+    }
 
 
 

@@ -21,7 +21,8 @@ public class Enemy : Unit {
     {
         if (other.tag == "Player")
         {
-            other.SendMessage("TakeDamage", damage * Time.deltaTime);       // huinya     
+            //other.SendMessage("TakeDamage", damage * Time.deltaTime);       // huinya     
+            other.GetComponent<Player>().TakeDamage(damage * Time.deltaTime);
         }
     }
 

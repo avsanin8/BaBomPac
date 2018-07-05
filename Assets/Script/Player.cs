@@ -4,6 +4,18 @@ using UnityEngine;
 
 public class Player : Unit {
     
+    
+    //private float curHitPointPlayer;
+
+    //protected override void Start()
+    //{
+    //    InitHealth();
+    //}
+
+    //void InitHealth()
+    //{
+    //    curHitPointPlayer = hitPoint = maxHitPoint;
+    //}
 
     void OnTriggerEnter2D(Collider2D other)
     {        
@@ -19,7 +31,8 @@ public class Player : Unit {
         }
     }
 
-    
+
+
 
     //public Cell GetPlayerPosCell()
     //{        
