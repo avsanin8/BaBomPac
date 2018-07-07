@@ -25,6 +25,12 @@ public class LevelManager : MonoBehaviour
     public RectTransform canvas;
     public Player player;
 
+    //private Dictionary<Cell, bool> passableCells = new Dictionary<Cell, bool>(); // value checked passing
+    //private Dictionary<Cell, bool> passableCellsCopy;
+    //private List<Cell> notIncludedCells = new List<Cell>();
+    private Cell cellWalkStart;
+    private Cell curClosestCell;
+    private Cell minWayLast;
 
     private void Awake()
     {
@@ -166,7 +172,7 @@ public class LevelManager : MonoBehaviour
                     continue;
                 //(allCells[x, y].transform.position - pos).magnitude < (cellClosest.transform.position - pos).magnitude)
                 if (allCells[x, y].IsWalk && (allCells[x, y].tr.position - pos).magnitude < (tempVector3 - pos).magnitude)
-                {
+                {                    
                     tempVector3 = allCells[x, y].tr.position;
                     cellClosest = allCells[x, y];
                 }
@@ -321,6 +327,7 @@ public class LevelManager : MonoBehaviour
                 {
                     curCell = Instantiate(cell, canvas);
                     curCell.IsWalk = true;
+                    //passableCells.Add(curCell, false);
                 }
 
                 curCell.tr.anchoredPosition = anchorPos;
@@ -328,10 +335,11 @@ public class LevelManager : MonoBehaviour
             }
         }
 
+        //passableCellsCopy =  new Dictionary<Cell, bool>(passableCells);
 
         //Fixed field
         SetAllNaighbor();
-        Cell cellWalkStart = null;     // start pos Player
+        cellWalkStart = null;     // start pos Player
         for (int x = 0; x < fieldWidth; x++)
         {
             for (int y = 0; y < fieldHeight; y++)
@@ -349,13 +357,59 @@ public class LevelManager : MonoBehaviour
                 }
             }                
         }
-        Cell closestCell = ClosestWalkableCell(cellWalkStart); //Closest Walkable Cell
-        Debug.Log("closestCell pos x:"+ closestCell.tr.position.x + " y: " + closestCell.tr.position.y);
+        curClosestCell = ClosestWalkableCell(cellWalkStart); //Closest Walkable Cell
 
-        // Check if MinWay can walk to Closest Walkable cell 
-        SetWalkingMapCells(cellWalkStart, closestCell);
+        SetWalkingMapCells(cellWalkStart, curClosestCell);
+
+        Debug.Log("closestCell pos x:"+ curClosestCell.tr.position.x + " y: " + curClosestCell.tr.position.y);
+
+        for (int x = 0; x < fieldWidth; x++)
+        {
+            for (int y = 0; y < fieldHeight; y++)
+            {
+                if (x == 0 || y == 0 || x == fieldWidth - 1 || y == fieldHeight - 1)
+                {
+                    continue;
+                }
+                if (CalcShortestWay(cellWalkStart, allCells[x, y]) == null && allCells[x,y].IsWalk)
+                {
+                    curClosestCell = ClosestWalkableCell(allCells[x, y]);
+
+                    if (CalcShortestWay(cellWalkStart, curClosestCell) != null) // if we can walk to curClosestCell
+                    {
+                        SetWalkingMapCells(curClosestCell, allCells[x, y]);
+                    }
+                    else
+                    {
+                        // find the closest cell of curClosestCell to which we can walk
+                        Cell tepmNearestCell = ClosestWhichCanWalk(curClosestCell);
+
+                        SetWalkingMapCells(tepmNearestCell, allCells[x,y]);
+                    }
+                }
+                else
+                    continue;
+            }
+        }
 
 
+        //if (cellWalkStart && curClosestCell)
+        //{
+        //    SetWalkingMapCells(cellWalkStart, curClosestCell);
+        //}
+        // Check if MinWay can walk to Closest Walkable cell
+
+        //foreach (var item in passableCellsCopy)
+        //{
+        //    if (item.Value == false && item.Key != null)
+        //        CheckSetPassebleCells(item.Key);
+        //}
+
+        //while(!IfEqualsDictionaries())        
+        //foreach (var item in notIncludedCells)
+        //{
+        //    CheckSetPassebleCells(item);
+        //}
 
 
         // Set Point prefab
@@ -374,15 +428,91 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-        
+        //foreach (var item in passableCells)
+        //{
+        //    Debug.Log("passableCells ORIGIN count: " + passableCells.Count + " pos X: "+ item.Key.tr.position.x + " Y: "+ item.Key.tr.position.y + " value: " + item.Value);
+        //}
+        //foreach (var item in passableCellsCopy)
+        //{
+        //    Debug.Log("passableCellsCopy COPY count: " + passableCellsCopy.Count + " pos X: " + item.Key.tr.position.x + " Y: " + item.Key.tr.position.y + " value: " + item.Value);
+        //}
+
     }
 
+    Cell ClosestWhichCanWalk(Cell curClosestCell)
+    {
+        Cell nearestPassCell = null;
+        float mag = Mathf.Infinity;
+                    
+        if (CalcShortestWay(cellWalkStart, curClosestCell) != null)
+        {
+            nearestPassCell = curClosestCell;
+        }
+        else
+        {            
+            for (int x = 0; x < fieldWidth; x++)
+            {
+                for (int y = 0; y < fieldHeight; y++)
+                {
+                    if (CalcShortestWay(cellWalkStart, allCells[x,y]) != null)
+                    {                        
+                        if ((allCells[x, y].tr.position - curClosestCell.tr.position).magnitude < mag)
+                        {                            
+                            mag = allCells[x, y].tr.position.magnitude;
+                            nearestPassCell = allCells[x, y];
+                        }   
+                    }
+                }
+            }
+        }
+
+        if (!nearestPassCell)
+        {
+            int a = 0;
+            a++;
+            Debug.Log("Trable in nearestPassCell: " + a);
+        }
+        return nearestPassCell;
+    }
+
+    //bool IfEqualsDictionaries()
+    //{
+    //    if (passableCellsCopy.Count != passableCells.Count)
+    //    {
+    //        passableCellsCopy = new Dictionary<Cell, bool>(passableCells);
+    //        foreach (var item in passableCellsCopy)
+    //        {
+    //            if (item.Value == false && item.Key != null)
+    //                CheckSetPassebleCells(item.Key);
+    //        }
+    //        return false;
+    //    }        
+    //    else return true;
+    //}
+
+    //void CheckSetPassebleCells(Cell checkedCell)
+    //{        
+    //    if (passableCells[checkedCell] == false)
+    //    {
+    //        if (minWayLast)
+    //        {                             
+    //            curClosestCell = ClosestWalkableCell(minWayLast);
+    //            SetWalkingMapCells(minWayLast, curClosestCell);
+    //        }
+    //        else if (checkedCell)
+    //        {
+    //            minWayLast = checkedCell;
+    //            curClosestCell = ClosestWalkableCell(minWayLast);
+    //            SetWalkingMapCells(minWayLast, curClosestCell);
+    //        }
+    //    }        
+    //}
 
     void SetWalkingMapCells(Cell pointStart, Cell pointEnd)
     {
-        if (!pointEnd || !pointEnd)
+        if (!pointStart || !pointEnd)
         {
-            Debug.Log("!pointEnd || !pointEnd Not Found") ;
+            Debug.Log("!pointEnd: " + pointStart + " || !pointEnd Not Found : "+ pointEnd);            
         }
 
         float minDist = CalcMinDist(pointStart, pointEnd);
@@ -459,36 +589,57 @@ public class LevelManager : MonoBehaviour
         //if (minWay.Contains(pointStart))
         //    Debug.Log("Wery good: is minWay Contains pointStart !! :)");
 
+        //List<Cell> keys = new List<Cell>(passableCells.Keys);
+        //foreach (Cell key in keys)
+        //{
+        //    passableCells[key] = ...;
+
+        //}
         
         if (minWay.Count != 0)
         {
             Debug.Log("minWay.Count: " + minWay.Count);
-            foreach (var item in minWay)
-            {
-                Debug.Log("minWay x: " + item.tr.position.x + " y: " + item.tr.position.y);
-                item.IsWalk = true;
+            foreach (Cell item in minWay)
+            {                
+                item.IsWalk = true;              
+                
             }
+            minWayLast = minWay[minWay.Count - 1];            
         }
+
+        if (minWay.Count == 0)
+        {
+            Debug.Log("minWay.Count == 0");
+        }
+
+        if (!minWayLast)
+            Debug.Log("minWayLast is null: " + minWayLast);
     }
 
     public Cell ClosestWalkableCell(Cell startCell)
     {           
-        Vector3 tempVector3 = allCells[fieldWidth - 1, fieldHeight - 1].tr.position;
+        float mag = Mathf.Infinity;
         Cell cellClosest = null;
         
         for (int x = 0; x < fieldWidth; x++)
         {
             for (int y = 0; y < fieldHeight; y++)
-            {                
-                if (startCell != allCells[x, y])
+            {
+                if (startCell != allCells[x, y]) //&& passableCells.ContainsKey(allCells[x, y]) && !passableCells[allCells[x, y]])
                 {
-                    if (allCells[x, y].IsWalk && (allCells[x, y].tr.position - startCell.tr.position).magnitude < (tempVector3 - startCell.tr.position).magnitude)
+                    if (allCells[x, y].IsWalk && (allCells[x, y].tr.position - startCell.tr.position).magnitude < mag)
                     {
-                        tempVector3 = allCells[x, y].tr.position;
+                        mag = allCells[x, y].tr.position.magnitude;
                         cellClosest = allCells[x, y];
                     }
                 }
             }
+        }
+        if (!cellClosest)
+        {
+            int a = 0;
+            a++;
+            Debug.Log("Trable:" + a + "cellClosest is NULL " + cellClosest);
         }
         return cellClosest;
 
