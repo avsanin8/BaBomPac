@@ -11,6 +11,8 @@ public class Unit : MonoBehaviour {
     public RectTransform tr;
     public float hitPoint;
     public float maxHitPoint;
+    public bool lookRight = false;
+    
 
     //public HealthBar healthBar;
 
@@ -18,7 +20,7 @@ public class Unit : MonoBehaviour {
 
     protected virtual void Start()
     {
-
+        
     }
 
     protected virtual void Update()
@@ -31,10 +33,10 @@ public class Unit : MonoBehaviour {
         {
             Vector2 itemPos = wayPoints[0].tr.position;
 
-            if (itemPos.x < tr.position.x)
-                tr.eulerAngles = new Vector3(0, 180, 0);
-            else
-                tr.eulerAngles = new Vector3(0, 0, 0);
+            if (itemPos.x < tr.position.x && lookRight)
+                Turn();
+            if (itemPos.x > tr.position.x && !lookRight)
+                Turn();
 
             tr.position = Vector2.MoveTowards(tr.position, itemPos, speed * Time.deltaTime);
             if (Vector2.Distance(tr.position, itemPos) == 0)
@@ -47,31 +49,48 @@ public class Unit : MonoBehaviour {
     public void DefinePath(Cell aTarget)
     {
         Cell startTarget = LevelManager.Instance.ClosestCell(tr.position);
-        wayPoints = LevelManager.Instance.CalcShortestWay(startTarget, aTarget);
+        wayPoints = LevelManager.Instance.CalcShortestWay(startTarget, aTarget);        
     }
 
 
-    public void TakeDamage(float damage)
+    //public void TakeDamage(float damage)
+    //{
+    //    hitPoint -= damage;
+    //    if (hitPoint < 0)
+    //    {
+    //        hitPoint = 0;
+    //        //FindObjectOfType<GameManager>().PlayerDead();
+    //        GameManager.Instance.PlayerDead();
+    //        Debug.Log("Dead!");
+    //    }        
+    //}
+
+    //public void AddHealth(float heal)
+    //{
+    //    // need add some healStaf 
+    //    hitPoint += heal;
+    //    if (hitPoint > maxHitPoint)
+    //    {
+    //        hitPoint = maxHitPoint;            
+    //    }        
+    //}
+
+    //public void AddSpeed(float buffSpeed, float buffTime)
+    //{
+    //    speed += buffSpeed;
+    //    Timer.Instance.TurnOn(buffTime);
+    //}
+
+    public void Turn()
     {
-        hitPoint -= damage;
-        if (hitPoint < 0)
-        {
-            hitPoint = 0;
-            //FindObjectOfType<GameManager>().PlayerDead();
-            GameManager.Instance.PlayerDead();
-            Debug.Log("Dead!");
-        }        
+        Vector3 tempPos = tr.localScale;
+        tempPos.x *= -1;
+        tr.localScale = tempPos;
+        lookRight = !lookRight;
     }
 
-    public void AddHealth(float heal)
-    {
-        // need add some healStaf 
-        hitPoint += heal;
-        if (hitPoint > maxHitPoint)
-        {
-            hitPoint = maxHitPoint;
-        }        
-    }
+    
+
 
 
 

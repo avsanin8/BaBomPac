@@ -14,4 +14,5 @@ public class Heart : MonoBehaviour {
             other.GetComponent<Player>().AddHealth(health * Time.deltaTime);
         }
     }
+
 }

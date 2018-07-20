@@ -6,6 +6,14 @@ public class Enemy : Unit {
     public int searchRadius = 200;
     public float damage = 10f;
 
+
+
+    //protected override void Start()
+    //{        
+    //    Cell tempCell = LevelManager.Instance.ClosestCell(tr.position);
+    //    tr.position = tempCell.tr.position;
+    //}
+
     protected override void Update () {
 
         base.Update();
@@ -13,8 +21,7 @@ public class Enemy : Unit {
         {            
             DefinePath(SearchRadius());
             return;
-        }        
-
+        }
     }
 
     private void OnTriggerStay2D(Collider2D other)

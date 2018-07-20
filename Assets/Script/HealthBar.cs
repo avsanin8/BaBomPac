@@ -9,6 +9,7 @@ public class HealthBar : MonoBehaviour {
     public Text ratioText;
     public RectTransform healthTr;
     public Unit unit;
+    private bool turn = false;
 
     //private float hitPoint = 150;
     //private float maxHitPoint = 150;
@@ -20,7 +21,12 @@ public class HealthBar : MonoBehaviour {
 
     private void Update()
     {
-        FixedPosition();
+        if (!unit.lookRight && !turn)
+            FixedPosition();
+        if (unit.lookRight && turn)
+            FixedPosition();
+
+
         UpdateHealthBar();
     }
 
@@ -34,11 +40,16 @@ public class HealthBar : MonoBehaviour {
 
     private void FixedPosition()
     {
-        Vector2 itemPos = healthTr.position;
+        Vector2 curPos = healthTr.localScale;
+        curPos.x *= -1;
+        healthTr.localScale = curPos;
+        turn = !turn;
 
-        if (itemPos.x > healthTr.position.x)
-            healthTr.eulerAngles = new Vector3(0, 180, 0);
-        else
-            healthTr.eulerAngles = new Vector3(0, 0, 0);
+        //Vector2 itemPos = healthTr.position;
+
+        //if (itemPos.x > healthTr.position.x)
+        //    healthTr.eulerAngles = new Vector3(0, 180, 0);
+        //else
+        //    healthTr.eulerAngles = new Vector3(0, 0, 0);
     }
 }
