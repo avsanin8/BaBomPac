@@ -7,10 +7,7 @@ using UnityEngine.EventSystems;
 public class InputManager : MonoBehaviour {
 
     public Player player;
-
-
-    private Cell targetHitCell = null;
-    //private float targetDistance;
+    private Cell targetHitCell = null;    
 
     void Update () {
         if (Input.GetMouseButtonDown(0))
@@ -23,9 +20,7 @@ public class InputManager : MonoBehaviour {
     }
 
     void ClickSelect()
-    {       
-
-        //Converting Mouse Pos to 2D (vector2) World Pos
+    {
         Vector2 camVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //RaycastHit2D hit = Physics2D.Raycast(camVector, this.gameObject.transform.position, 0f, 1 << LayerMask.NameToLayer("Ground"));
         

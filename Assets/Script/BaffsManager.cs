@@ -14,7 +14,7 @@ namespace Assets.Script
         {
             //подписаться на рассылку событий
             //как нотификейшн манагер узнает о том, что бафс должен получить месагу?
-            NotificationManager.Instance.AddEventListener(this);
+            NotificationManager.Instance.AddEvent(this);
         }
 
         public void HandleEvent(NotificationType aEventType)
@@ -22,14 +22,19 @@ namespace Assets.Script
             if (aEventType == NotificationType.levelIsGenerated)
             {
                 //do stuff
-                SetPositions();
+                SetPosition();
             }
         }
 
-        void SetPositions()
+        void SetPosition()
         {
             Cell tempCell = LevelManager.Instance.ClosestCell(bootsSpeedTr.position);
             bootsSpeedTr.position = tempCell.tr.position;
+        }
+
+        void OnDestroy()
+        {
+            NotificationManager.Instance.RemoveEvent(this);
         }
     }
 }

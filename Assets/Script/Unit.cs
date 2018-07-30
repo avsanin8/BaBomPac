@@ -1,22 +1,40 @@
-﻿using System.Collections;
+﻿using Assets.Script;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Fraction
+{
+    None = 0,
+    Player = 1,
+    Alien = 2,
+    Neutral = 3
+}
+
+[System.Serializable]
+public struct DamageBase
+{
+
+    public Fraction fraction;
+    public float value;
+    public bool isOverTime;
+}
+
 public class Unit : MonoBehaviour {
-
-    // Use this for initialization
-
+        
     public float speed;
-
     public RectTransform tr;
     public float hitPoint;
     public float maxHitPoint;
     public bool lookRight = false;
     
-
-    //public HealthBar healthBar;
-
     protected List<Cell> wayPoints;
+
+    //[SerializeField] GameObject _onDeathEffect;
+    [SerializeField] protected Fraction _fraction;
+    private bool _isDead = false;
+    [HideInInspector]
+    public bool UnitIsDead { get { return _isDead; } }
 
     protected virtual void Start()
     {
@@ -52,6 +70,34 @@ public class Unit : MonoBehaviour {
         wayPoints = LevelManager.Instance.CalcShortestWay(startTarget, aTarget);        
     }
 
+
+    public virtual void DoDamage(DamageBase aDamage)
+    {
+        if (_isDead) { return; }
+
+        if (_fraction == aDamage.fraction)
+        {
+            return;
+        }
+
+        if (aDamage.isOverTime)
+        {
+            hitPoint -= aDamage.value * Time.fixedDeltaTime;
+        }
+        else
+        {
+            hitPoint -= aDamage.value;
+        }
+
+        if (hitPoint <= 0)
+        {
+            hitPoint = 0;
+            _isDead = true;
+            //UnitIsDead
+            Destroy(this.gameObject); //todo: Efect
+            //Instantiate(_onDeathEffect, tr.position, tr.rotation);
+        }
+    }
 
     //public void TakeDamage(float damage)
     //{

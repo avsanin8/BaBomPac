@@ -14,8 +14,7 @@ namespace Assets.Script
     public enum NotificationType
     {
         levelIsGenerated = 0,
-        playerIsDied = 1,
-        timerOn = 2
+        playerIsDied = 1
     }
 
     public class NotificationManager
@@ -36,19 +35,19 @@ namespace Assets.Script
 
         public List<IEventListener> eventListeners = new List<IEventListener>();
 
-        public void AddEventListener(IEventListener aEventListener)
+        public void AddEvent(IEventListener aEventListener)
         {
             eventListeners.Add(aEventListener);
         }
 
-        public void RemoveEventListener(IEventListener aEventListener)
+        public void RemoveEvent(IEventListener aEventListener)
         {
             eventListeners.Remove(aEventListener);
         }
 
-        public void PostEventListener(NotificationType aTypeEvent)
+        public void PostEvent(NotificationType aTypeEvent)
         {
-            foreach (IEventListener listener in eventListeners)
+            foreach (IEventListener listener in eventListeners.ToList())
             {
                 listener.HandleEvent(aTypeEvent);
             }

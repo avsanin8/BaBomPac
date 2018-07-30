@@ -443,7 +443,7 @@ public class LevelManager : MonoBehaviour
         Cell tempCellHeart = ClosestCell(heartTr.position);
         heartTr.position = tempCellHeart.tr.position;
         
-        NotificationManager.Instance.PostEventListener(NotificationType.levelIsGenerated);
+        NotificationManager.Instance.PostEvent(NotificationType.levelIsGenerated);
     }
 
     Cell ClosestWhichCanWalk(Cell curClosestCell)

@@ -1,51 +1,62 @@
 ﻿using Assets.Script;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Timer : MonoBehaviour, IEventListener{
+public class Timer : MonoBehaviour, IEventListener {
 
     public GameObject timerUIObj;
     public Text timerTextUI;
-    private float startTime;
-    private bool timerTurnOn = false;
+
+    //private float startTime;
+    //public bool timerTurnOn = false;
+    public Player player;
+
 
     void Awake()
     {
-        NotificationManager.Instance.AddEventListener(this);
+        NotificationManager.Instance.AddEvent(this);
     }
 
     private void Update()
     {
-        if (!timerTurnOn)
+        if (!player.timerTurnOn)
             return;
-        timerUIObj.SetActive(true);
-        float curTime = startTime - Time.time;
-        string min = ((int)curTime / 60).ToString();
-        string sec = (curTime % 60).ToString("f2");
+        else
+            TimerUpdate();
+    }
 
-        timerTextUI.text = "Time Buff left: " + min + " : " + sec;
+    public void TimerUpdate()
+    {        
+        timerTextUI.text = "Time Buff left: " + player.TimerMin + " : " + player.TimerSec;
 
-        if (curTime <= 0)
+        if (player.TimeBuff <= 0)
         {
-            curTime = startTime = 0;
-            timerTurnOn = false;
+            player.timerTurnOn = false;
             timerUIObj.SetActive(false);
         }
     }
 
-    public void TurnOn(float buffTime)
+    public void TurnOn()
     {
-        startTime = buffTime;
-        timerTurnOn = true;
+        timerUIObj.SetActive(true);        
+        //timerTurnOn = true;        
+        TimerUpdate();
     }
 
     public void HandleEvent(NotificationType aEventType)
     {
-        if (aEventType == NotificationType.timerOn)
+        if (aEventType == NotificationType.playerIsDied)
         {
-            TurnOn(10);
+            player.timerTurnOn = false;
+            timerUIObj.SetActive(false);
         }
+    }
+
+    void OnDestroy()
+    {
+        NotificationManager.Instance.RemoveEvent(this);
     }
 }

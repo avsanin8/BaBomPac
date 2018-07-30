@@ -1,33 +1,73 @@
-﻿using System.Collections;
+﻿using Assets.Script;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SpawnEnemy : MonoBehaviour {
+public class SpawnEnemy : MonoBehaviour, IEventListener
+{
 
-    public RectTransform[] spawnPoints;
-    public GameObject enemy;
+    public RectTransform[] spawnPointsTr;
+    public GameObject enemy;    
 
-    private void Start()
+    void Awake()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 2)
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                Spawning(enemy);
-            }
-        }
-        else
-            Spawning(enemy);            
+        //подписаться на рассылку событий NotificationManager
+        NotificationManager.Instance.AddEvent(this);
     }
+    
+    //private void Start()
+    //{
+    //    if (SceneManager.GetActiveScene().buildIndex == 2)
+    //    {
+    //        for (int i = 0; i < 4; i++)
+    //        {
+    //            Spawning(enemy);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        SetPosition();
+    //        Spawning(enemy);
+    //    }
+    //}
 
     void Spawning(GameObject _enemy)
     {
-        if (spawnPoints.Length == 0)
-        {
-            Debug.Log("Set spawnPoints! spawnPoints.Length == 0 ");
-        }
-        Transform spTr = spawnPoints[Random.Range(0, spawnPoints.Length)];
+        RectTransform spTr = spawnPointsTr[Random.Range(0, spawnPointsTr.Length)];
         Instantiate(_enemy, spTr);
+
+        if (spawnPointsTr.Length == 0)
+        {
+            Debug.Log("Set spawnPoints! spawnPointsTr.Length == 0 ");
+        }
+        
+    }
+
+    void SetPosition()
+    {
+        for (int i = 0; i < spawnPointsTr.Length; i++)
+        {
+            Cell tempCell = LevelManager.Instance.ClosestCell(spawnPointsTr[i].position);
+            spawnPointsTr[i].position = tempCell.tr.position;
+        }
+    }
+
+    public void HandleEvent(NotificationType aEventType)
+    {
+        Debug.Log("HandleEvent : "+ aEventType);
+        if (aEventType == NotificationType.levelIsGenerated)
+        {            
+            SetPosition();
+            for (int i = 0; i < spawnPointsTr.Length; i++)
+            {
+                Spawning(enemy);
+            }            
+        }
+    }
+
+    void OnDestroy()
+    {
+        NotificationManager.Instance.RemoveEvent(this);
     }
 }

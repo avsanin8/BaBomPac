@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Enemy : Unit {
     public int searchRadius = 200;
-    public float damage = 10f;
 
-
+    [SerializeField]
+    protected DamageBase _damage;
+    
 
     //protected override void Start()
     //{        
@@ -24,14 +25,33 @@ public class Enemy : Unit {
         }
     }
 
+    //private void OnTriggerStay2D(Collider2D other)
+    //{
+    //    if (other.tag == "Player" && other != null)// todo: remove .tag
+    //    {
+    //        if (!other.GetComponent<Player>().IsDead)  
+    //            other.GetComponent<Player>().TakeDamage(damage * Time.deltaTime); // todo: takeDamage (owner)
+    //    }        
+    //}
+
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.tag == "Player")
+        Unit hitUnit = other.GetComponent<Unit>();
+        if (hitUnit)
         {
-            //other.SendMessage("TakeDamage", damage * Time.deltaTime);       // huinya     
-            other.GetComponent<Player>().TakeDamage(damage * Time.deltaTime);
+            hitUnit.DoDamage(_damage);
         }
     }
+
+    //private void OnTriggerEnter2D(Collider2D other)
+    //{
+    //    if (other.tag == "Weapon" && other != null && other.enabled)// todo: remove .tag
+    //    {
+    //        Debug.Log("Enemy getDamage and other.enabled is:" + other.enabled);
+    //        //or Damage
+    //        Destroy(this.gameObject); //todo: Efect
+    //    }
+    //}
 
 
     private Cell SearchRadius()

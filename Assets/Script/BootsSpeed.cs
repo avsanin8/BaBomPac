@@ -1,36 +1,35 @@
-﻿using System.Collections;
+﻿using Assets.Script;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BootsSpeed : MonoBehaviour {
     public RectTransform tr;
 
-    public float addSpeed = 100; // add speed
+    public float baffSpeed = 100; // add speed
     public float timeBuff = 10; // sec
+    //public Timer timer;
+    //public Player player;
 
-    //private void LateUpdate()
+
+    //public void HandleEvent(NotificationType eventType)
     //{
-    //    Wait();
-    //    SetPosition();
+    //    throw new System.NotImplementedException();
     //}
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Player")
+        //if (other.tag == "Player")// todo: remove .tag
+        if (other.GetComponent<Player>())
         {
-            //other.SendMessage("AddHealth", health * Time.deltaTime);
-            other.GetComponent<Player>().AddSpeed(addSpeed, timeBuff);
+            if (!other.GetComponent<Player>().BaffSpeedOn)
+            {                
+                other.GetComponent<Player>().AddSpeed(baffSpeed);                
+            }
+            else
+                return;
         }
     }
 
-    //IEnumerator Wait()
-    //{        
-    //    yield return new WaitForFixedUpdate();
-    //}
 
-    //void SetPosition()
-    //{
-    //    Cell tempCell = LevelManager.Instance.ClosestCell(tr.position);
-    //    tr.position = tempCell.tr.position;
-    //}
 }

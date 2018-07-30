@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour, IEventListener{
         }
 
         //подписаться на рассылку событий NotificationManager
-        NotificationManager.Instance.AddEventListener(this);
+        NotificationManager.Instance.AddEvent(this);
     }
 
     public void EndGame()
@@ -52,15 +52,12 @@ public class GameManager : MonoBehaviour, IEventListener{
     public void CompleteLevel()
     {
         completeLevelUI.SetActive(true);
-        //completeLevelUI.GetComponent<Animator>().Play("LevelComplete");        
-        
         Debug.Log(" level Won!");
     }
 
     public void LoadLevel()
-    {
-        //ScoreScript.scoreValue = 0;
-        Debug.Log("Load Next Level");
+    {      
+        
         if (SceneManager.GetActiveScene().buildIndex >= 2)
             SceneManager.LoadScene(2);
         else
@@ -80,4 +77,11 @@ public class GameManager : MonoBehaviour, IEventListener{
             PlayerDead();
         }
     }
+
+    void OnDestroy()
+    {
+        NotificationManager.Instance.RemoveEvent(this);
+    }
+
+    //DontDestroyOnLoad(gameObject);
 }
