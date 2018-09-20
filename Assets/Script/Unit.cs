@@ -24,8 +24,8 @@ public class Unit : MonoBehaviour {
         
     public float speed;
     public RectTransform tr;
-    public float hitPoint;
-    public float maxHitPoint;
+    public float hitPoint = 150;
+    public float maxHitPoint = 150;
     public bool lookRight = false;
     
     protected List<Cell> wayPoints;
@@ -73,6 +73,8 @@ public class Unit : MonoBehaviour {
 
     public virtual void DoDamage(DamageBase aDamage)
     {
+        //Color curColor = gameObject.GetComponent<CanvasRenderer>().GetColor();
+
         if (_isDead) { return; }
 
         if (_fraction == aDamage.fraction)
@@ -82,21 +84,28 @@ public class Unit : MonoBehaviour {
 
         if (aDamage.isOverTime)
         {
-            hitPoint -= aDamage.value * Time.fixedDeltaTime;
+            hitPoint -= aDamage.value * Time.fixedDeltaTime;            
+            //gameObject.GetComponent<CanvasRenderer>().SetColor(Color.red);
         }
         else
         {
             hitPoint -= aDamage.value;
+            //gameObject.GetComponent<CanvasRenderer>().SetColor(Color.red);
         }
 
         if (hitPoint <= 0)
         {
             hitPoint = 0;
             _isDead = true;
-            //UnitIsDead
-            Destroy(this.gameObject); //todo: Efect
-            //Instantiate(_onDeathEffect, tr.position, tr.rotation);
+            if (_fraction == Fraction.Player)
+                NotificationManager.Instance.PostEvent(NotificationType.playerIsDied);
+            if (_fraction == Fraction.Alien)
+            {
+                Destroy(this.gameObject); //todo: Efect
+                //Instantiate(_onDeathEffect, tr.position, tr.rotation);
+            }
         }
+        //gameObject.GetComponentInChildren<CanvasRenderer>().SetColor(curColor);
     }
 
     //public void TakeDamage(float damage)

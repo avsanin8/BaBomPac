@@ -51,7 +51,8 @@ public class GameManager : MonoBehaviour, IEventListener{
 
     public void CompleteLevel()
     {
-        completeLevelUI.SetActive(true);
+        NotificationManager.Instance.PostEvent(NotificationType.levelIsCompleted);
+        completeLevelUI.SetActive(true);        
         Debug.Log(" level Won!");
     }
 

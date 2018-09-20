@@ -10,4 +10,5 @@ public class LevelComplete : MonoBehaviour {
     {
         GameManager.Instance.LoadLevel();
     }
+
 }

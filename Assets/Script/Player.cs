@@ -37,8 +37,7 @@ public class Player : Unit {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        //if (other.gameObject.tag == "Point")// todo: remove .tag
-        if(other.GetComponent<Point>())
+        if (other.GetComponent<Point>())
         {
             ScoreScript.scoreValue += 10;
             ScoreScript.maxScoreValue += 10;
@@ -58,13 +57,7 @@ public class Player : Unit {
     public float CurWeaponCD { get { return _curWeaponCD; } }
 
     protected override void Update()
-    {
-        if (hitPoint <= 0)
-        {
-            hitPoint = 0;
-            IsDead = true;
-            NotificationManager.Instance.PostEvent(NotificationType.playerIsDied);
-        }
+    {        
         Vector3 curPosPlayer = tr.position; // for speed anim
         base.Update();
         if (Input.GetMouseButtonDown(1) && _curWeaponCD <= 0.0f) //Attack
@@ -83,11 +76,11 @@ public class Player : Unit {
 
         if ((!IsAnimationPlaying("attack") || !IsAnimationPlaying("special attack")) && weponAxeCol.enabled)
         {
-            weponAxeCol.enabled = false;
+            weponAxeCol.enabled = false;            
         }
-        if (IsAnimationPlaying("attack") || IsAnimationPlaying("special attack"))
+        if (IsAnimationPlaying("attack") || IsAnimationPlaying("special attack") && !weponAxeCol.enabled)
         {
-            weponAxeCol.enabled = true;
+            weponAxeCol.enabled = true;            
         }
         if (_curWeaponCD > 0.0f)
             _curWeaponCD -= Time.deltaTime;
@@ -96,6 +89,10 @@ public class Player : Unit {
         if (BaffSpeedOn)
         {
             TimerUpdate();
+        }
+        else if (_timeBuff <= 0)
+        {
+            timerTurnOn = false;
         }
         else return;
     }

@@ -59,21 +59,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Heart.cs" />
+    <Compile Include="Assets\Resources\Orc Warrior\Scripts\MouseController.cs" />
+    <Compile Include="Assets\Script\Axe.cs" />
+    <Compile Include="Assets\Script\AxeIndicator.cs" />
+    <Compile Include="Assets\Script\BaffsManager.cs" />
+    <Compile Include="Assets\Script\BootsSpeed.cs" />
     <Compile Include="Assets\Script\CameraController.cs" />
     <Compile Include="Assets\Script\Cell.cs" />
     <Compile Include="Assets\Script\Enemy.cs" />
     <Compile Include="Assets\Script\GameManager.cs" />
     <Compile Include="Assets\Script\GameOver.cs" />
+    <Compile Include="Assets\Script\GlobalControl.cs" />
     <Compile Include="Assets\Script\HealthBar.cs" />
+    <Compile Include="Assets\Script\Heart.cs" />
     <Compile Include="Assets\Script\InputManager.cs" />
     <Compile Include="Assets\Script\LevelComplete.cs" />
     <Compile Include="Assets\Script\LevelManager.cs" />
     <Compile Include="Assets\Script\MainMenu.cs" />
+    <Compile Include="Assets\Script\NotificationManager.cs" />
     <Compile Include="Assets\Script\PauseMenu.cs" />
     <Compile Include="Assets\Script\Player.cs" />
     <Compile Include="Assets\Script\Point.cs" />
     <Compile Include="Assets\Script\ScoreScript.cs" />
+    <Compile Include="Assets\Script\SpawnEnemy.cs" />
+    <Compile Include="Assets\Script\Timer.cs" />
     <Compile Include="Assets\Script\Unit.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />

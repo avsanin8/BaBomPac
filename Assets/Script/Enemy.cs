@@ -25,14 +25,6 @@ public class Enemy : Unit {
         }
     }
 
-    //private void OnTriggerStay2D(Collider2D other)
-    //{
-    //    if (other.tag == "Player" && other != null)// todo: remove .tag
-    //    {
-    //        if (!other.GetComponent<Player>().IsDead)  
-    //            other.GetComponent<Player>().TakeDamage(damage * Time.deltaTime); // todo: takeDamage (owner)
-    //    }        
-    //}
 
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -43,15 +35,6 @@ public class Enemy : Unit {
         }
     }
 
-    //private void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    if (other.tag == "Weapon" && other != null && other.enabled)// todo: remove .tag
-    //    {
-    //        Debug.Log("Enemy getDamage and other.enabled is:" + other.enabled);
-    //        //or Damage
-    //        Destroy(this.gameObject); //todo: Efect
-    //    }
-    //}
 
 
     private Cell SearchRadius()

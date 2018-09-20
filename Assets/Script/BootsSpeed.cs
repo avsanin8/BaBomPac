@@ -18,8 +18,7 @@ public class BootsSpeed : MonoBehaviour {
     //}
 
     private void OnTriggerEnter2D(Collider2D other)
-    {
-        //if (other.tag == "Player")// todo: remove .tag
+    {        
         if (other.GetComponent<Player>())
         {
             if (!other.GetComponent<Player>().BaffSpeedOn)

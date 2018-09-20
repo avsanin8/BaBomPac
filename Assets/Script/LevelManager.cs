@@ -278,8 +278,8 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-        //print coord
-        //PrintCellAllCoord();
+        NotificationManager.Instance.PostEvent(NotificationType.levelIsGenerated);
+      
     }
 
     public void SetNaighbor(Cell neighborCell)

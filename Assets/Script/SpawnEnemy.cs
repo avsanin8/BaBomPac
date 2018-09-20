@@ -54,15 +54,21 @@ public class SpawnEnemy : MonoBehaviour, IEventListener
     }
 
     public void HandleEvent(NotificationType aEventType)
-    {
-        Debug.Log("HandleEvent : "+ aEventType);
+    {        
         if (aEventType == NotificationType.levelIsGenerated)
-        {            
+        {
             SetPosition();
-            for (int i = 0; i < spawnPointsTr.Length; i++)
+            if (SceneManager.GetActiveScene().buildIndex == 2)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Spawning(enemy);
+                }
+            }
+            else
             {
                 Spawning(enemy);
-            }            
+            }
         }
     }
 

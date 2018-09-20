@@ -33,8 +33,7 @@ public class Timer : MonoBehaviour, IEventListener {
         timerTextUI.text = "Time Buff left: " + player.TimerMin + " : " + player.TimerSec;
 
         if (player.TimeBuff <= 0)
-        {
-            player.timerTurnOn = false;
+        {            
             timerUIObj.SetActive(false);
         }
     }
@@ -50,7 +49,7 @@ public class Timer : MonoBehaviour, IEventListener {
     {
         if (aEventType == NotificationType.playerIsDied)
         {
-            player.timerTurnOn = false;
+            //player.timerTurnOn = false;
             timerUIObj.SetActive(false);
         }
     }

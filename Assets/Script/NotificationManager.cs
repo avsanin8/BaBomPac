@@ -14,7 +14,8 @@ namespace Assets.Script
     public enum NotificationType
     {
         levelIsGenerated = 0,
-        playerIsDied = 1
+        playerIsDied = 1,
+        levelIsCompleted = 2
     }
 
     public class NotificationManager
